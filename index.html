@@ -11,131 +11,310 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
     <header>
         <nav>
             <div class="left">
-                Mansi's Portfolio
+                <span class="purple">Mansi</span>'s Portfolio
             </div>
             <div class="right">
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/">About</a></li>
-                    <li><a href="/">Services</a></li>
-                    <li><a href="/">Projects</a></li>
-                    <li><a href="/">Contact Me</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact Me</a></li>
                 </ul>
             </div>
         </nav>
     </header>
+    
     <main>
-        <section class="firstSection">
+        <section id="home" class="firstSection">
             <div class="leftSection">
-                Hi, My name is <span class="purple">Mansi</span>
-                <div>
-                    and I am a Passionate
-                </div>
-
+                <h1>Hi, My name is <span class="purple">Mansi</span></h1>
+                <div>and I am a Passionate</div>
                 <span id="element"></span>
-
                 <div class="buttons">
-                    <button class="btn">Download Resume</button>
-                    <button class="btn">Visit Github</button>
+                    <button class="btn"><i class="fas fa-file-download"></i> Download Resume</button>
+                    <button class="btn"><i class="fab fa-github"></i> Visit Github</button>
                 </div>
-
-                
             </div>
             <div class="rightSection">
-                <img src="Images/bg.png" alt="">
+                <img src="Images/bg.png" alt="Developer illustration">
             </div>
         </section>
 
         <hr>
 
-        <section class="secondSection">
-            <span class="text-gray">What I have done so Far</span>
+        <section id="experience" class="secondSection">
+            <span class="text-gray">What I have done so far</span>
             <h1>Work Experience</h1>
+            
             <div class="box">
                 <div class="vertical">
-                    <img class="image-top" src="Images/frontend.png" alt="">
+                    <img class="image-top" src="Images/frontend.png" alt="Frontend Development">
                     <div class="vertical-title">
                         Frontend Developer (2024-2025)
                     </div>
                     <div class="vertical-desc">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis consequatur repellat est
-                        eius voluptates deleniti magnam magni! Quos laborum ab, voluptatum rerum debitis odio.
+                        Developed responsive user interfaces using HTML, CSS, and JavaScript. Created engaging web experiences with modern frameworks and optimized performance.
                     </div>
                 </div>
+                
                 <div class="vertical">
-                    <img class="image-top" src="Images/NodeJs.png" alt="" style="width: 111px;">
+                    <img class="image-top" src="Images/NodeJs.png" alt="Node.js">
                     <div class="vertical-title">
                         NodeJs Developer (2024-2025)
                     </div>
                     <div class="vertical-desc">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis consequatur repellat est
-                        eius voluptates deleniti magnam magni! Quos laborum ab, voluptatum rerum debitis odio.
+                        Built scalable server-side applications using Node.js and Express. Implemented RESTful APIs and integrated with databases for efficient data management.
                     </div>
                 </div>
+                
                 <div class="vertical">
-                    <img class="image-top" src="Images/React.png" alt="" style="width: 38px;">
+                    <img class="image-top" src="Images/React.png" alt="React">
                     <div class="vertical-title">
                         React Developer (2024-2025)
                     </div>
                     <div class="vertical-desc">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis consequatur repellat est
-                        eius voluptates deleniti magnam magni! Quos laborum ab, voluptatum rerum debitis odio.
+                        Created dynamic single-page applications with React. Implemented state management solutions and optimized component architecture for better performance.
                     </div>
                 </div>
+                
                 <div class="vertical">
-                    <img class="image-top" src="Images/mongo.png" alt="" style="width: 39px;">
+                    <img class="image-top" src="Images/mongo.png" alt="MongoDB">
                     <div class="vertical-title">
                         Backend Developer (2024-2025)
                     </div>
                     <div class="vertical-desc">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis consequatur repellat est
-                        eius voluptates deleniti magnam magni! Quos laborum ab, voluptatum rerum debitis odio.
+                        Designed and implemented database schemas using MongoDB. Created efficient data models and integrated with front-end applications through API endpoints.
                     </div>
                 </div>
             </div>
-    </section>
-</main>
+        </section>
+        
+        <!-- New Projects Section -->
+        <section id="projects" class="projectsSection">
+            <span class="text-gray">My Recent Work</span>
+            <h1>Projects</h1>
+            
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="/api/placeholder/400/250" alt="E-commerce project">
+                    </div>
+                    <div class="project-content">
+                        <h3>E-commerce Platform</h3>
+                        <p>Full-stack e-commerce website with React frontend and Node.js backend</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-btn"><i class="fas fa-globe"></i> Live Demo</a>
+                            <a href="#" class="project-btn"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="/api/placeholder/400/250" alt="Weather App">
+                    </div>
+                    <div class="project-content">
+                        <h3>Weather Dashboard</h3>
+                        <p>Real-time weather forecasting app with location-based services</p>
+                        <div class="project-tags">
+                            <span>JavaScript</span>
+                            <span>API</span>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-btn"><i class="fas fa-globe"></i> Live Demo</a>
+                            <a href="#" class="project-btn"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="contactSection">
+            <span class="text-gray">Get In Touch</span>
+            <h1>Contact Me</h1>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p>sainimansi360@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="contact-details">
+                            <h3>Location</h3>
+                            <p>Jaipur, India</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="contact-details">
+                            <h3>Phone</h3>
+                            <p>+91 9799639080</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Subject">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
-<footer>
-    <div class="footer">
-        <div class="footer-first">
-            <h3>Mansi's Developer Portfolio</h3>
-        </div>
-        <div class="footer-second">
-            <ul>
-                <li>Home</li>
-                <li>About</li>
-                <li>Services</li>
-                <li>Contact</li>
-            </ul>
-        </div>
-        <div class="footer-third">
-            <ul>
-                <li>Home</li>
-                <li>About</li>
-                <li>Services</li>
-                <li>Contact</li>
-            </ul>
+    <footer>
+        <div class="footer">
+            <div class="footer-first">
+                <h3>Mansi's Developer Portfolio</h3>
+                <p>A passionate full-stack developer creating innovative web solutions with modern technologies.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-second">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-third">
+                <h4>Services</h4>
+                <ul>
+                    <li>Web Development</li>
+                    <li>Mobile App Development</li>
+                    <li>UI/UX Design</li>
+                    <li>Database Design</li>
+                </ul>
+            </div>
         </div>
         
-    </div>
-    <div class="footer-rights">
-        Copyright &#169; www.mansisportfolio.com | All Rights Reserved
-    </div>
-</footer>
+        <div class="footer-rights">
+            Copyright &#169; 2025 | <span class="purple">Mansi's Portfolio</span> | All Rights Reserved
+        </div>
+    </footer>
 
+    <!-- Scroll To Top Button -->
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script>
         var typed = new Typed('#element', {
-            strings: ['Full-Stack Developer', 'Application Developer'],
+            strings: ['Full-Stack Developer', 'Application Developer', 'UI/UX Designer', 'Problem Solver'],
             typeSpeed: 50,
+            backSpeed: 30,
+            loop: true,
+            backDelay: 1500
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add active class to navigation links based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('nav ul li a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Show/hide scroll to top button
+            const scrollTopBtn = document.querySelector('.scroll-top');
+            if (scrollTopBtn) {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    scrollTopBtn.classList.add('active');
+                } else {
+                    scrollTopBtn.classList.remove('active');
+                }
+            }
+        });
+        
+        // Scroll to top functionality
+        document.querySelector('.scroll-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     </script>
 </body>
