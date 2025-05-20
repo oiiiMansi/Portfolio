@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="rightSection">
-                <img src="Images/bg.png" alt="Developer illustration">
+                <img src="Images/founder-mansi.jpg" alt="Developer illustration">
             </div>
         </section>
 
@@ -175,8 +175,8 @@
                     </div>
                     
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="www.linkedin.com/in/oiiimansi"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/oiiiMansi"><i class="fab fa-github"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                     </div>
@@ -209,8 +209,8 @@
                 <h3>Mansi's Developer Portfolio</h3>
                 <p>A passionate full-stack developer creating innovative web solutions with modern technologies.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="www.linkedin.com/in/oiiimansi"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/oiiiMansi"><i class="fab fa-github"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
                 </div>
@@ -249,74 +249,7 @@
     </div>
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <script>
-        var typed = new Typed('#element', {
-            strings: ['Full-Stack Developer', 'Application Developer', 'UI/UX Designer', 'Problem Solver'],
-            typeSpeed: 50,
-            backSpeed: 30,
-            loop: true,
-            backDelay: 1500
-        });
-        
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Add active class to navigation links based on scroll position
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navItems = document.querySelectorAll('nav ul li a');
-            
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                
-                if (pageYOffset >= sectionTop - 100) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('href') === `#${current}`) {
-                    item.classList.add('active');
-                }
-            });
-            
-            // Show/hide scroll to top button
-            const scrollTopBtn = document.querySelector('.scroll-top');
-            if (scrollTopBtn) {
-                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                    scrollTopBtn.classList.add('active');
-                } else {
-                    scrollTopBtn.classList.remove('active');
-                }
-            }
-        });
-        
-        // Scroll to top functionality
-        document.querySelector('.scroll-top').addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
