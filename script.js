@@ -1,5 +1,5 @@
  var typed = new Typed('#element', {
-            strings: ['Full-Stack Developer', 'Application Developer', 'UI/UX Designer', 'Problem Solver'],
+            strings: ['Full-Stack Developer', 'Application Developer', 'Problem Solver'],
             typeSpeed: 50,
             backSpeed: 30,
             loop: true,
@@ -64,3 +64,5 @@
                 behavior: 'smooth'
             });
         });
+
+        
