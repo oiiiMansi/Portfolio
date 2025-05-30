@@ -1,79 +1,228 @@
-// Initialize Typed.js for animated text effect
-// Creates a typewriter animation that cycles through different role titles
-var typed = new Typed('#element', {
-    strings: ['Full-Stack Developer', 'Application Developer', 'Problem Solver'], // Array of strings to type
-    typeSpeed: 50,      // Speed of typing in milliseconds per character
-    backSpeed: 30,      // Speed of backspacing in milliseconds per character
-    loop: true,         // Keep looping through the strings infinitely
-    backDelay: 1500     // Delay before starting to backspace (in milliseconds)
-});
+/**
+ * Portfolio Website Interactive Features
+ * Handles typewriter animation, smooth scrolling, navigation highlighting, and scroll-to-top functionality
+ */
 
-// Smooth scrolling functionality for navigation links
-// Applies to all anchor tags that have href starting with "#" (internal page links)
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault(); // Prevent default jump-to-section behavior
+class PortfolioController {
+    constructor() {
+        this.config = {
+            typewriter: {
+                strings: ['Full-Stack Developer', 'Application Developer', 'Problem Solver'],
+                typeSpeed: 50,
+                backSpeed: 30,
+                backDelay: 1500,
+                loop: true
+            },
+            scroll: {
+                headerOffset: 80,
+                sectionHighlightOffset: 100,
+                scrollTopThreshold: 300
+            }
+        };
         
-        // Get the target section ID from the href attribute
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
+        this.elements = {};
+        this.throttleTimer = null;
         
-        // If target element exists, scroll to it smoothly
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80, // Offset by 80px to account for fixed header
-                behavior: 'smooth' // Enable smooth scrolling animation
-            });
-        }
-    });
-});
+        this.init();
+    }
 
-// Navigation highlight and scroll-to-top button functionality
-// Runs on every scroll event to update active navigation states
-window.addEventListener('scroll', function() {
-    const sections = document.querySelectorAll('section'); // Get all page sections
-    const navItems = document.querySelectorAll('nav ul li a'); // Get all navigation links
-    
-    let current = ''; // Variable to store currently active section ID
-    
-    // Loop through each section to determine which one is currently in view
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;    // Distance from top of page to section
-        const sectionHeight = section.clientHeight; // Height of the section
-        
-        // Check if current scroll position is within this section
-        // 100px offset ensures section is highlighted slightly before it's fully in view
-        if (pageYOffset >= sectionTop - 100) {
-            current = section.getAttribute('id'); // Set this section as current
+    /**
+     * Initialize all portfolio features
+     */
+    init() {
+        this.cacheElements();
+        this.initTypewriter();
+        this.bindEvents();
+    }
+
+    /**
+     * Cache DOM elements for better performance
+     */
+    cacheElements() {
+        this.elements = {
+            typewriterElement: document.getElementById('element'),
+            navLinks: document.querySelectorAll('a[href^="#"]'),
+            sections: document.querySelectorAll('section'),
+            navItems: document.querySelectorAll('nav ul li a'),
+            scrollTopBtn: document.querySelector('.scroll-top')
+        };
+    }
+
+    /**
+     * Initialize typewriter animation
+     */
+    initTypewriter() {
+        if (!this.elements.typewriterElement) {
+            console.warn('Typewriter element not found');
+            return;
         }
-    });
-    
-    // Update navigation link highlighting
-    navItems.forEach(item => {
-        item.classList.remove('active'); // Remove active class from all nav items
-        // Add active class to nav item that corresponds to current section
-        if (item.getAttribute('href') === `#${current}`) {
-            item.classList.add('active');
-        }
-    });
-    
-    // Show/hide scroll-to-top button based on scroll position
-    const scrollTopBtn = document.querySelector('.scroll-top');
-    if (scrollTopBtn) {
-        // Show button when user has scrolled down 300px or more
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            scrollTopBtn.classList.add('active');
-        } else {
-            scrollTopBtn.classList.remove('active');
+
+        try {
+            new Typed('#element', this.config.typewriter);
+        } catch (error) {
+            console.error('Failed to initialize typewriter:', error);
         }
     }
+
+    /**
+     * Bind all event listeners
+     */
+    bindEvents() {
+        this.bindSmoothScrolling();
+        this.bindScrollEvents();
+        this.bindScrollToTop();
+    }
+
+    /**
+     * Add smooth scrolling to navigation links
+     */
+    bindSmoothScrolling() {
+        this.elements.navLinks.forEach(anchor => {
+            anchor.addEventListener('click', this.handleSmoothScroll.bind(this));
+        });
+    }
+
+    /**
+     * Handle smooth scroll navigation
+     * @param {Event} e - Click event
+     */
+    handleSmoothScroll(e) {
+        e.preventDefault();
+        
+        const targetId = e.currentTarget.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (!targetElement) {
+            console.warn(`Target element ${targetId} not found`);
+            return;
+        }
+
+        const targetPosition = targetElement.offsetTop - this.config.scroll.headerOffset;
+        
+        window.scrollTo({
+            top: Math.max(0, targetPosition),
+            behavior: 'smooth'
+        });
+    }
+
+    /**
+     * Bind scroll-related event listeners with throttling
+     */
+    bindScrollEvents() {
+        window.addEventListener('scroll', this.throttleScroll.bind(this), { passive: true });
+    }
+
+    /**
+     * Throttle scroll events for better performance
+     */
+    throttleScroll() {
+        if (this.throttleTimer) return;
+        
+        this.throttleTimer = requestAnimationFrame(() => {
+            this.handleScroll();
+            this.throttleTimer = null;
+        });
+    }
+
+    /**
+     * Handle scroll events for navigation highlighting and scroll-to-top button
+     */
+    handleScroll() {
+        this.updateActiveNavigation();
+        this.updateScrollTopButton();
+    }
+
+    /**
+     * Update active navigation item based on current scroll position
+     */
+    updateActiveNavigation() {
+        const scrollPosition = window.pageYOffset;
+        let activeSection = '';
+
+        // Find the currently active section
+        this.elements.sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            if (scrollPosition >= sectionTop - this.config.scroll.sectionHighlightOffset &&
+                scrollPosition < sectionTop + sectionHeight - this.config.scroll.sectionHighlightOffset) {
+                activeSection = section.getAttribute('id');
+            }
+        });
+
+        // Update navigation highlighting
+        this.elements.navItems.forEach(item => {
+            const isActive = item.getAttribute('href') === `#${activeSection}`;
+            item.classList.toggle('active', isActive);
+        });
+    }
+
+    /**
+     * Show/hide scroll-to-top button based on scroll position
+     */
+    updateScrollTopButton() {
+        if (!this.elements.scrollTopBtn) return;
+
+        const scrollPosition = Math.max(
+            document.body.scrollTop,
+            document.documentElement.scrollTop
+        );
+
+        const shouldShow = scrollPosition > this.config.scroll.scrollTopThreshold;
+        this.elements.scrollTopBtn.classList.toggle('active', shouldShow);
+    }
+
+    /**
+     * Bind scroll-to-top button functionality
+     */
+    bindScrollToTop() {
+        if (!this.elements.scrollTopBtn) {
+            console.warn('Scroll-to-top button not found');
+            return;
+        }
+
+        this.elements.scrollTopBtn.addEventListener('click', this.scrollToTop.bind(this));
+    }
+
+    /**
+     * Scroll to top of page smoothly
+     */
+    scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    /**
+     * Clean up event listeners and resources
+     */
+    destroy() {
+        if (this.throttleTimer) {
+            cancelAnimationFrame(this.throttleTimer);
+        }
+        
+        // Remove event listeners
+        this.elements.navLinks.forEach(anchor => {
+            anchor.removeEventListener('click', this.handleSmoothScroll);
+        });
+        
+        window.removeEventListener('scroll', this.throttleScroll);
+        
+        if (this.elements.scrollTopBtn) {
+            this.elements.scrollTopBtn.removeEventListener('click', this.scrollToTop);
+        }
+    }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.portfolioController = new PortfolioController();
 });
 
-// Scroll to top button click handler
-// Smoothly scrolls the page back to the top when button is clicked
-document.querySelector('.scroll-top').addEventListener('click', function() {
-    window.scrollTo({
-        top: 0,             // Scroll to very top of page
-        behavior: 'smooth'  // Use smooth scrolling animation
-    });
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (window.portfolioController) {
+        window.portfolioController.destroy();
+    }
 });
