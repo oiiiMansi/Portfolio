@@ -157,9 +157,7 @@ class PortfolioController {
         });
     }
 
-    /**
-     * Show/hide scroll-to-top button based on scroll position
-     */
+    //Show/hide scroll-to-top button based on scroll position
     updateScrollTopButton() {
         if (!this.elements.scrollTopBtn) return;
 
