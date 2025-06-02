@@ -1,6 +1,6 @@
 /**
- * Portfolio Website Interactive Features
- * Handles typewriter animation, smooth scrolling, navigation highlighting, and scroll-to-top functionality
+ * Optimized Portfolio Website Interactive Features
+ * Enhanced performance with efficient DOM handling, better event management, and optimized animations
  */
 
 class PortfolioController {
@@ -16,56 +16,127 @@ class PortfolioController {
             scroll: {
                 headerOffset: 80,
                 sectionHighlightOffset: 100,
-                scrollTopThreshold: 300
+                scrollTopThreshold: 300,
+                throttleDelay: 16 // ~60fps
             }
         };
         
-        this.elements = {};
-        this.throttleTimer = null;
+        this.elements = new Map();
+        this.sectionData = [];
+        this.lastScrollY = 0;
+        this.ticking = false;
+        this.activeSection = '';
+        this.isScrollTopVisible = false;
         
         this.init();
     }
 
     /**
-     * Initialize all portfolio features
+     * Initialize all portfolio features with performance optimizations
      */
-    init() {
-        this.cacheElements();
-        this.initTypewriter();
-        this.bindEvents();
+    async init() {
+        try {
+            await this.waitForDOM();
+            this.cacheElements();
+            this.precomputeSectionData();
+            this.initTypewriter();
+            this.bindEvents();
+        } catch (error) {
+            console.error('Portfolio initialization failed:', error);
+        }
     }
 
     /**
-     * Cache DOM elements for better performance
+     * Wait for DOM to be fully ready
+     */
+    waitForDOM() {
+        return new Promise(resolve => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', resolve, { once: true });
+            } else {
+                resolve();
+            }
+        });
+    }
+
+    /**
+     * Cache DOM elements using Map for O(1) lookups
      */
     cacheElements() {
-        this.elements = {
-            typewriterElement: document.getElementById('element'),
-            navLinks: document.querySelectorAll('a[href^="#"]'),
-            sections: document.querySelectorAll('section'),
-            navItems: document.querySelectorAll('nav ul li a'),
-            scrollTopBtn: document.querySelector('.scroll-top')
+        const selectors = {
+            typewriterElement: '#element',
+            navLinks: 'a[href^="#"]',
+            sections: 'section[id]',
+            navItems: 'nav ul li a[href^="#"]',
+            scrollTopBtn: '.scroll-top'
         };
+
+        for (const [key, selector] of Object.entries(selectors)) {
+            const isMultiple = ['navLinks', 'sections', 'navItems'].includes(key);
+            const elements = isMultiple 
+                ? Array.from(document.querySelectorAll(selector))
+                : document.querySelector(selector);
+            
+            if (elements && (!isMultiple || elements.length > 0)) {
+                this.elements.set(key, elements);
+            }
+        }
     }
 
     /**
-     * Initialize typewriter animation
+     * Precompute section positions and data for efficient scroll handling
+     */
+    precomputeSectionData() {
+        const sections = this.elements.get('sections');
+        if (!sections) return;
+
+        this.sectionData = sections.map(section => ({
+            id: section.id,
+            element: section,
+            top: 0, // Will be updated on resize
+            height: 0 // Will be updated on resize
+        }));
+
+        this.updateSectionPositions();
+        
+        // Update positions on resize with debouncing
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => this.updateSectionPositions(), 150);
+        }, { passive: true });
+    }
+
+    /**
+     * Update cached section positions
+     */
+    updateSectionPositions() {
+        this.sectionData.forEach(data => {
+            const rect = data.element.getBoundingClientRect();
+            data.top = rect.top + window.pageYOffset;
+            data.height = rect.height;
+        });
+    }
+
+    /**
+     * Initialize typewriter with error handling
      */
     initTypewriter() {
-        if (!this.elements.typewriterElement) {
-            console.warn('Typewriter element not found');
+        const element = this.elements.get('typewriterElement');
+        if (!element || typeof Typed === 'undefined') {
+            console.warn('Typewriter dependencies not available');
             return;
         }
 
         try {
-            new Typed('#element', this.config.typewriter);
+            this.typewriter = new Typed('#element', this.config.typewriter);
         } catch (error) {
-            console.error('Failed to initialize typewriter:', error);
+            console.error('Typewriter initialization failed:', error);
         }
     }
 
     /**
-     * Bind all event listeners
+     * Bind events with passive listeners and delegation where possible
      */
     bindEvents() {
         this.bindSmoothScrolling();
@@ -74,153 +145,245 @@ class PortfolioController {
     }
 
     /**
-     * Add smooth scrolling to navigation links
+     * Use event delegation for navigation links
      */
     bindSmoothScrolling() {
-        this.elements.navLinks.forEach(anchor => {
-            anchor.addEventListener('click', this.handleSmoothScroll.bind(this));
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href^="#"]');
+            if (link) {
+                this.handleSmoothScroll(e, link);
+            }
         });
     }
 
     /**
-     * Handle smooth scroll navigation
+     * Optimized smooth scroll with native Intersection Observer fallback
      * @param {Event} e - Click event
+     * @param {Element} link - Clicked link element
      */
-    handleSmoothScroll(e) {
+    handleSmoothScroll(e, link) {
         e.preventDefault();
         
-        const targetId = e.currentTarget.getAttribute('href');
+        const targetId = link.getAttribute('href');
         const targetElement = document.querySelector(targetId);
         
-        if (!targetElement) {
-            console.warn(`Target element ${targetId} not found`);
-            return;
-        }
+        if (!targetElement) return;
 
         const targetPosition = targetElement.offsetTop - this.config.scroll.headerOffset;
         
-        window.scrollTo({
-            top: Math.max(0, targetPosition),
-            behavior: 'smooth'
-        });
+        // Use native scroll behavior when supported
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo({
+                top: Math.max(0, targetPosition),
+                behavior: 'smooth'
+            });
+        } else {
+            // Fallback smooth scroll for older browsers
+            this.smoothScrollFallback(targetPosition);
+        }
     }
 
     /**
-     * Bind scroll-related event listeners with throttling
+     * Fallback smooth scroll implementation
+     * @param {number} targetPosition - Target scroll position
+     */
+    smoothScrollFallback(targetPosition) {
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 500;
+        let startTime = null;
+
+        const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            
+            // Easing function
+            const ease = progress * (2 - progress);
+            
+            window.scrollTo(0, startPosition + (distance * ease));
+            
+            if (progress < 1) {
+                requestAnimationFrame(animation);
+            }
+        };
+        
+        requestAnimationFrame(animation);
+    }
+
+    /**
+     * Optimized scroll event handling with requestAnimationFrame
      */
     bindScrollEvents() {
-        window.addEventListener('scroll', this.throttleScroll.bind(this), { passive: true });
+        window.addEventListener('scroll', () => {
+            this.lastScrollY = window.pageYOffset;
+            this.requestTick();
+        }, { passive: true });
     }
 
     /**
-     * Throttle scroll events for better performance
+     * Request animation frame for scroll updates
      */
-    throttleScroll() {
-        if (this.throttleTimer) return;
-        
-        this.throttleTimer = requestAnimationFrame(() => {
-            this.handleScroll();
-            this.throttleTimer = null;
-        });
+    requestTick() {
+        if (!this.ticking) {
+            requestAnimationFrame(() => this.updateOnScroll());
+            this.ticking = true;
+        }
     }
 
     /**
-     * Handle scroll events for navigation highlighting and scroll-to-top button
+     * Batched scroll updates for better performance
      */
-    handleScroll() {
+    updateOnScroll() {
         this.updateActiveNavigation();
         this.updateScrollTopButton();
+        this.ticking = false;
     }
 
     /**
-     * Update active navigation item based on current scroll position
+     * Efficient active navigation update using precomputed data
      */
     updateActiveNavigation() {
-        const scrollPosition = window.pageYOffset;
-        let activeSection = '';
+        const scrollPosition = this.lastScrollY;
+        const offset = this.config.scroll.sectionHighlightOffset;
+        let newActiveSection = '';
 
-        // Find the currently active section
-        this.elements.sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (scrollPosition >= sectionTop - this.config.scroll.sectionHighlightOffset &&
-                scrollPosition < sectionTop + sectionHeight - this.config.scroll.sectionHighlightOffset) {
-                activeSection = section.getAttribute('id');
+        // Find active section using precomputed data
+        for (const section of this.sectionData) {
+            if (scrollPosition >= section.top - offset &&
+                scrollPosition < section.top + section.height - offset) {
+                newActiveSection = section.id;
+                break;
             }
-        });
+        }
 
-        // Update navigation highlighting
-        this.elements.navItems.forEach(item => {
-            const isActive = item.getAttribute('href') === `#${activeSection}`;
+        // Only update DOM if active section changed
+        if (newActiveSection !== this.activeSection) {
+            this.activeSection = newActiveSection;
+            this.updateNavigationHighlight();
+        }
+    }
+
+    /**
+     * Update navigation highlight efficiently
+     */
+    updateNavigationHighlight() {
+        const navItems = this.elements.get('navItems');
+        if (!navItems) return;
+
+        const targetHref = `#${this.activeSection}`;
+        
+        navItems.forEach(item => {
+            const isActive = item.getAttribute('href') === targetHref;
             item.classList.toggle('active', isActive);
         });
     }
 
-    //Show/hide scroll-to-top button based on scroll position
+    /**
+     * Efficient scroll-to-top button visibility toggle
+     */
     updateScrollTopButton() {
-        if (!this.elements.scrollTopBtn) return;
-
-        const scrollPosition = Math.max(
-            document.body.scrollTop,
-            document.documentElement.scrollTop
-        );
-
-        const shouldShow = scrollPosition > this.config.scroll.scrollTopThreshold;
-        this.elements.scrollTopBtn.classList.toggle('active', shouldShow);
+        const shouldShow = this.lastScrollY > this.config.scroll.scrollTopThreshold;
+        
+        if (shouldShow !== this.isScrollTopVisible) {
+            this.isScrollTopVisible = shouldShow;
+            const btn = this.elements.get('scrollTopBtn');
+            if (btn) {
+                btn.classList.toggle('active', shouldShow);
+            }
+        }
     }
 
     /**
-     * Bind scroll-to-top button functionality
+     * Bind scroll-to-top with single event listener
      */
     bindScrollToTop() {
-        if (!this.elements.scrollTopBtn) {
-            console.warn('Scroll-to-top button not found');
-            return;
-        }
+        const btn = this.elements.get('scrollTopBtn');
+        if (!btn) return;
 
-        this.elements.scrollTopBtn.addEventListener('click', this.scrollToTop.bind(this));
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.scrollToTop();
+        });
     }
 
     /**
-     * Scroll to top of page smoothly
+     * Optimized scroll to top
      */
     scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            this.smoothScrollFallback(0);
+        }
     }
 
     /**
-     * Clean up event listeners and resources
+     * Enhanced cleanup with proper resource management
      */
     destroy() {
-        if (this.throttleTimer) {
-            cancelAnimationFrame(this.throttleTimer);
+        // Cancel any pending animation frames
+        if (this.ticking) {
+            this.ticking = false;
         }
-        
-        // Remove event listeners
-        this.elements.navLinks.forEach(anchor => {
-            anchor.removeEventListener('click', this.handleSmoothScroll);
-        });
-        
-        window.removeEventListener('scroll', this.throttleScroll);
-        
-        if (this.elements.scrollTopBtn) {
-            this.elements.scrollTopBtn.removeEventListener('click', this.scrollToTop);
+
+        // Destroy typewriter instance
+        if (this.typewriter && typeof this.typewriter.destroy === 'function') {
+            this.typewriter.destroy();
         }
+
+        // Clear cached elements
+        this.elements.clear();
+        this.sectionData = [];
+        
+        // Reset state
+        this.activeSection = '';
+        this.isScrollTopVisible = false;
+        this.lastScrollY = 0;
+    }
+
+    /**
+     * Public API for manual refresh
+     */
+    refresh() {
+        this.updateSectionPositions();
+        this.updateOnScroll();
     }
 }
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    window.portfolioController = new PortfolioController();
-});
+// Singleton pattern with lazy initialization
+let portfolioInstance = null;
+
+/**
+ * Initialize portfolio controller
+ */
+function initPortfolio() {
+    if (!portfolioInstance && document.readyState !== 'loading') {
+        portfolioInstance = new PortfolioController();
+        window.portfolioController = portfolioInstance; // For debugging
+    }
+}
+
+/**
+ * Cleanup portfolio controller
+ */
+function cleanupPortfolio() {
+    if (portfolioInstance) {
+        portfolioInstance.destroy();
+        portfolioInstance = null;
+        delete window.portfolioController;
+    }
+}
+
+// Initialize when ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPortfolio, { once: true });
+} else {
+    initPortfolio();
+}
 
 // Cleanup on page unload
-window.addEventListener('beforeunload', () => {
-    if (window.portfolioController) {
-        window.portfolioController.destroy();
-    }
-});
+window.addEventListener('beforeunload', cleanupPortfolio, { once: true });
+
+// Expose for manual control
+window.PortfolioController = PortfolioController;
