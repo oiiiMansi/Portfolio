@@ -92,7 +92,7 @@ nav ul li a:hover {
 }
 
 #element {
-    display: block;
+    display: inline;
     min-height: 80px;
     font-weight: 600;
     margin: 20px 0 40px 0;
