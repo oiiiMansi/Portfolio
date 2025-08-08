@@ -717,3 +717,12 @@ window.addEventListener('beforeunload', cleanupPortfolio, { once: true });
  * singleton behavior for normal usage.
  */
 window.PortfolioController = PortfolioController;
+
+
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navRight = document.querySelector('.right');
+
+  menuToggle.addEventListener('click', () => {
+    navRight.classList.toggle('show');
+  });
+
