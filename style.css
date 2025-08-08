@@ -69,6 +69,14 @@ nav ul li a:hover::after {
 nav ul li a:hover {
     color: rgb(176, 106, 240);
 }
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
 
 /* Hero Section */
 .firstSection {
