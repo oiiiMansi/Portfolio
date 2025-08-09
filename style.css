@@ -1270,6 +1270,7 @@ footer {
     justify-content: space-between;
     max-width: 1200px;
     margin: 0 auto;
+    flex-direction: row !important;
 }
 
 .footer-first {
