@@ -1186,6 +1186,10 @@ main hr {
     color: #a0a0a0;
 }
 
+.contact-social{
+    justify-content: start !important;
+}
+
 .social-links {
     display: flex;
     gap: 15px;
