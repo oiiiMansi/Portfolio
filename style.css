@@ -1340,6 +1340,7 @@ footer ul li {
     margin: 10px 0;
     cursor: pointer;
     transition: color 0.3s ease;
+    color: #a0a0a0;
 }
 
 footer ul li a {
