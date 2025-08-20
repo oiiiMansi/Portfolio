@@ -1500,7 +1500,11 @@ footer .footer-rights {
     max-width: 100%;
 }
 
-
+.footer-first h3::after,
+.footer h4::after {
+    left: 25%;
+    width: 50%;
+}
 
 .social-links {
     justify-content: center;
