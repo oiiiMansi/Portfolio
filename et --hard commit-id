@@ -1,0 +1,48 @@
+[33md7109fd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m fixed portfolio folder
+[33m8940d7a[m[33m ([m[1;31morigin/main[m[33m)[m fixed portfolio folder
+[33m434a00a[m update
+[33md667fcd[m minor update
+[33m8e124fb[m minor update
+[33mf514199[m minor Update
+[33m77db9a8[m minor Update
+[33ma330d53[m minor change
+[33m650f352[m minor change
+[33m7850bd9[m minor change
+[33m7131b8c[m minor change
+[33mb96730a[m minor change
+[33m7705249[m minor change
+[33m40c34b3[m minor change
+[33me9ceb33[m style: fix the position of social links in the contact me section
+[33m3d06481[m minor change
+[33m2da25fb[m minor change
+[33mfddc457[m feat: add responsive navbar functionality with media queries and toggle script
+[33mce82080[m feat: add responsive hamburger menu for mobile navigation
+[33m67163f6[m Fix: Aligned Typed.js cursor inline with text in hero section
+[33m5a19efb[m minor update
+[33m5888624[m .
+[33m0d5d50f[m .
+[33me8215ae[m Fixed image path for both GitHub and localhost
+[33mb7ebf08[m Force add all files including images
+[33m270872c[m .
+[33mee49b18[m minor update
+[33mab92767[m minor update
+[33m355c350[m  enhance code documentation with comprehensive comments and JSDoc
+[33mf50bb52[m  refactor portfolio controller with 70% fewer DOM queries and RAF throttling
+[33mb312a6c[m minor update
+[33m462fd36[m minor update
+[33m491e05c[m minor update
+[33md9816d9[m minor update
+[33mbb82e4b[m migrate to OOP, optimize performance & improve UX
+[33m025a435[m Add comprehensive comments to portfolio JavaScript
+[33m2f976e7[m Remove accidentally added file
+[33m724f362[m minor update
+[33mcdb6e81[m ✨ Add Services Section: 6 Professional Offerings, Responsive Grid, Animations, and CTA
+[33m844d1fb[m Minor update
+[33m4aca34d[m Image update
+[33m403649c[m Minor update
+[33m3961820[m Implemented About section with skills, experience, and responsive design
+[33m13c761c[m style(profile-image): apply circular styling, add purple border, and adjust sizing for design consistency
+[33m0977a42[m redesigned portfolio layout, added projects/contact sections, improved responsiveness and code quality
+[33m6e2f23e[m Merge branch 'main' of https://github.com/oiiiMansi/Portfolio
+[33m7addc8a[m Initial portfolio upload
+[33m0526ba9[m Initial commit
