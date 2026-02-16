@@ -4,6 +4,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+a{
+    text-decoration: none;
+}
 
 body {
     background-color: #0a0a20;
@@ -1006,6 +1009,200 @@ main hr {
 
 .info-value {
     color: #a0a0a0;
+}
+
+/* Initiatives Section */
+.initiativesSection {
+    max-width: 90%;
+    margin: auto;
+    padding: 80px 0;
+}
+
+.initiatives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.initiative-card {
+    background-color: #12174b;
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid rgba(176, 106, 240, 0.3);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.initiative-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, rgb(176, 106, 240), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.initiative-card:hover::before {
+    transform: scaleX(1);
+}
+
+.initiative-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(176, 106, 240, 0.6);
+    box-shadow: 0 20px 50px rgba(176, 106, 240, 0.2);
+}
+
+.initiative-header {
+    padding: 40px 35px 25px 35px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.initiative-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(176, 106, 240, 0.2), rgba(116, 50, 180, 0.2));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.initiative-card:hover .initiative-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.initiative-icon i {
+    font-size: 36px;
+    color: rgb(176, 106, 240);
+}
+
+.initiative-header h3 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: white;
+    font-weight: 700;
+}
+
+.initiative-tagline {
+    color: #b0b0b0;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+.initiative-content {
+    padding: 35px;
+}
+
+.initiative-description {
+    color: #d0d0d0;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+.initiative-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+}
+
+.feature-item i {
+    color: rgb(176, 106, 240);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.initiative-footer {
+    padding: 0 35px 35px 35px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.initiative-btn {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 25px;
+    background: linear-gradient(135deg, rgb(176, 106, 240), rgb(116, 50, 180));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.initiative-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(176, 106, 240, 0.3);
+}
+
+.initiative-btn.secondary {
+    background: transparent;
+    border: 2px solid rgb(176, 106, 240);
+}
+
+.initiative-btn.secondary:hover {
+    background: rgba(176, 106, 240, 0.1);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .initiatives-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .initiative-footer {
+        flex-direction: column;
+    }
+    
+    .initiative-btn {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .initiative-header {
+        padding: 30px 25px 20px 25px;
+    }
+    
+    .initiative-content {
+        padding: 25px;
+    }
+    
+    .initiative-footer {
+        padding: 0 25px 25px 25px;
+    }
+    
+    .initiative-header h3 {
+        font-size: 1.6rem;
+    }
+    
+    .initiative-features {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Skills Section */
